@@ -14,7 +14,25 @@ public class JSONPlaceholderExercise {
         // 3. Set the HTTP method to 'GET'
         // 4. Send the request and get the response
         // 5. Return the response body as string
-        return null;
+        Http http = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(BASE_URL + '/posts/' + postId);
+        req.setMethod('GET');
+
+        String retrievedPost;
+        try {
+            HttpResponse res = http.send(req);
+            if (res.getStatusCode() >= 200 && res.getStatusCode() < 300) {
+                retrievedPost = res.getBody();
+            } else {
+                retrievedPost = 'There was an error retrieving the post. ';
+                retrievedPost += 'Error message: ' + res.getStatusCode() + ' ' + res.getBody();
+            }
+        } catch (CalloutException ex) {
+            throw ex;
+        }
+        
+        return retrievedPost;
     }
     
     /**
@@ -34,7 +52,17 @@ public class JSONPlaceholderExercise {
         // 5. Set the request body
         // 6. Send the request and get the response
         // 7. Return the response body as string
-        return null;
+        Http http = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(BASE_URL + '/posts');
+        req.setMethod('POST');
+        String reqBody = '{ "title": "' + title + '", "body": "' + body + '", "userId": "' + userId + '"}"';
+        req.setBody(reqBody);
+
+        HttpResponse res = http.send(req);
+        String response = res.getBody();
+
+        return response;
     }
     
     /**
@@ -91,5 +119,11 @@ public class JSONPlaceholderExercise {
         // 4. Send the request and get the response
         // 5. Return the response status code
         return null;
+    }
+
+    public class Request {
+        String title;
+        String body;
+        Integer userId;
     }
 } 
