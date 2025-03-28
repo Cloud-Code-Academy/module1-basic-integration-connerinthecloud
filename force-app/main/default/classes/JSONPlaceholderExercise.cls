@@ -171,6 +171,19 @@ public class JSONPlaceholderExercise {
         // 3. Set the HTTP method to 'DELETE'
         // 4. Send the request and get the response
         // 5. Return the response status code
-        return null;
+        Http http = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(BASE_URL + '/posts/' + postId);
+        req.setMethod('DELETE');
+        
+        Integer responseCode;
+        try {
+            HttpResponse res = http.send(req);
+            responseCode = res.getStatusCode();
+        } catch (CalloutException ex) {
+            throw ex;
+        }
+        
+        return responseCode;
     }
-} 
+ } 
