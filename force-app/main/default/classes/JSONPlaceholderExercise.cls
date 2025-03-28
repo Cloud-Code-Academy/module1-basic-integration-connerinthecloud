@@ -56,13 +56,24 @@ public class JSONPlaceholderExercise {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(BASE_URL + '/posts');
         req.setMethod('POST');
+        req.setHeader('ContentType', 'application/json');
         String reqBody = '{ "title": "' + title + '", "body": "' + body + '", "userId": "' + userId + '"}"';
         req.setBody(reqBody);
 
-        HttpResponse res = http.send(req);
-        String response = res.getBody();
-
-        return response;
+        String responseBody;
+        try {
+            HttpResponse res = http.send(req);
+            if (res.getStatusCode() >= 200 && res.getStatusCode() < 300) {
+                responseBody = res.getBody();
+            } else {
+                responseBody = 'There was an error creating the post. ';
+                responseBody += 'Error message: ' + res.getStatusCode() + ' ' + res.getBody();
+            }
+        } catch (CalloutException ex) {
+            throw ex;
+        }
+        
+        return responseBody;
     }
     
     /**
