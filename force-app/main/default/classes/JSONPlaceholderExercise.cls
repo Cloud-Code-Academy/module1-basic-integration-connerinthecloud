@@ -57,8 +57,12 @@ public class JSONPlaceholderExercise {
         req.setEndpoint(BASE_URL + '/posts');
         req.setMethod('POST');
         req.setHeader('ContentType', 'application/json');
-        String reqBody = '{ "title": "' + title + '", "body": "' + body + '", "userId": "' + userId + '"}"';
-        req.setBody(reqBody);
+
+        PostObject postObj = new PostObject();
+        postObj.title = title;
+        postObj.body = body;
+        postObj.userId = userId;
+        req.setBody(JSON.serialize(postObj));
 
         String responseBody;
         try {
@@ -99,8 +103,13 @@ public class JSONPlaceholderExercise {
         req.setEndpoint(BASE_URL + '/posts/' + postId);
         req.setHeader('ContentType', 'application/json');
         req.setMethod('PUT');
-        String reqBody = '{ "id": "' + postId + '", "title": "' + title + '", "body": "' + body + '", "userId": "' + userId + '"}"';         
-        req.setBody(reqBody);
+
+        PostObject postObj = new PostObject();
+        postObj.title = title;
+        postObj.body = body;
+        postObj.userId = userId;
+        postObj.postid = postId;
+        req.setBody(JSON.serialize(postObj));
 
         String responseBody;
         try {
@@ -139,8 +148,11 @@ public class JSONPlaceholderExercise {
         req.setEndpoint(BASE_URL + '/posts/' + postId);
         req.setHeader('ContentType', 'application/json');
         req.setMethod('PATCH');
-        String reqBody = '{ "id": "' + postId + '", "title": "' + title + '"}"';         
-        req.setBody(reqBody);
+
+        PostObject postObj = new PostObject();
+        postObj.title = title;
+        postObj.postId = postId;
+        req.setBody(JSON.serialize(postObj));
 
         String responseBody;
         try {
@@ -185,5 +197,12 @@ public class JSONPlaceholderExercise {
         }
         
         return responseCode;
+    }
+
+    public class PostObject {
+        public String title;
+        public String body;
+        public Integer postId;
+        public Integer userId;
     }
  } 
