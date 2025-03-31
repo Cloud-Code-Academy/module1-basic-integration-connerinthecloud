@@ -14,7 +14,25 @@ public class JSONPlaceholderExercise {
         // 3. Set the HTTP method to 'GET'
         // 4. Send the request and get the response
         // 5. Return the response body as string
-        return null;
+        Http http = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(BASE_URL + '/posts/' + postId);
+        req.setMethod('GET');
+
+        String retrievedPost;
+        try {
+            HttpResponse res = http.send(req);
+            if (res.getStatusCode() >= 200 && res.getStatusCode() < 300) {
+                retrievedPost = res.getBody();
+            } else {
+                retrievedPost = 'There was an error retrieving the post. ';
+                retrievedPost += 'Error message: ' + res.getStatusCode() + ' ' + res.getBody();
+            }
+        } catch (CalloutException ex) {
+            throw ex;
+        }
+        
+        return retrievedPost;
     }
     
     /**
@@ -34,7 +52,32 @@ public class JSONPlaceholderExercise {
         // 5. Set the request body
         // 6. Send the request and get the response
         // 7. Return the response body as string
-        return null;
+        Http http = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(BASE_URL + '/posts');
+        req.setMethod('POST');
+        req.setHeader('ContentType', 'application/json');
+
+        PostObject postObj = new PostObject();
+        postObj.title = title;
+        postObj.body = body;
+        postObj.userId = userId;
+        req.setBody(JSON.serialize(postObj));
+
+        String responseBody;
+        try {
+            HttpResponse res = http.send(req);
+            if (res.getStatusCode() >= 200 && res.getStatusCode() < 300) {
+                responseBody = res.getBody();
+            } else {
+                responseBody = 'There was an error creating the post. ';
+                responseBody += 'Error message: ' + res.getStatusCode() + ' ' + res.getBody();
+            }
+        } catch (CalloutException ex) {
+            throw ex;
+        }
+        
+        return responseBody;
     }
     
     /**
@@ -55,7 +98,33 @@ public class JSONPlaceholderExercise {
         // 5. Set the request body
         // 6. Send the request and get the response
         // 7. Return the response body as string
-        return null;
+        Http http = new HTTP();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(BASE_URL + '/posts/' + postId);
+        req.setHeader('ContentType', 'application/json');
+        req.setMethod('PUT');
+
+        PostObject postObj = new PostObject();
+        postObj.title = title;
+        postObj.body = body;
+        postObj.userId = userId;
+        postObj.postid = postId;
+        req.setBody(JSON.serialize(postObj));
+
+        String responseBody;
+        try {
+            HttpResponse res = http.send(req);
+            if (res.getStatusCode() >= 200 && res.getStatusCode() < 300) {
+                responseBody = res.getBody();
+            } else {
+                responseBody = 'There was an error creating the post. ';
+                responseBody += 'Error code: ' + res.getStatusCode();
+            }
+        } catch (CalloutException ex) {
+            throw ex;
+        }
+        
+        return responseBody;
     }
     
     /**
@@ -74,7 +143,31 @@ public class JSONPlaceholderExercise {
         // 5. Set the request body
         // 6. Send the request and get the response
         // 7. Return the response body as string
-        return null;
+        Http http = new HTTP();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(BASE_URL + '/posts/' + postId);
+        req.setHeader('ContentType', 'application/json');
+        req.setMethod('PATCH');
+
+        PostObject postObj = new PostObject();
+        postObj.title = title;
+        postObj.postId = postId;
+        req.setBody(JSON.serialize(postObj));
+
+        String responseBody;
+        try {
+            HttpResponse res = http.send(req);
+            if (res.getStatusCode() >= 200 && res.getStatusCode() < 300) {
+                responseBody = res.getBody();
+            } else {
+                responseBody = 'There was an error creating the post. ';
+                responseBody += 'Error code: ' + res.getStatusCode();
+            }
+        } catch (CalloutException ex) {
+            throw ex;
+        }
+        
+        return responseBody;
     }
     
     /**
@@ -90,6 +183,26 @@ public class JSONPlaceholderExercise {
         // 3. Set the HTTP method to 'DELETE'
         // 4. Send the request and get the response
         // 5. Return the response status code
-        return null;
+        Http http = new Http();
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(BASE_URL + '/posts/' + postId);
+        req.setMethod('DELETE');
+        
+        Integer responseCode;
+        try {
+            HttpResponse res = http.send(req);
+            responseCode = res.getStatusCode();
+        } catch (CalloutException ex) {
+            throw ex;
+        }
+        
+        return responseCode;
     }
-} 
+
+    public class PostObject {
+        public String title;
+        public String body;
+        public Integer postId;
+        public Integer userId;
+    }
+ } 
